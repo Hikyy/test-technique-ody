@@ -1,0 +1,33 @@
+{
+  "name": "@ody/i18n",
+  "version": "0.1.0",
+  "type": "module",
+  "private": true,
+  "exports": {
+    ".": {
+      "types": "./src/index.ts",
+      "default": "./src/index.ts"
+    },
+    "./messages/fr": {
+      "types": "./src/messages/fr.ts",
+      "default": "./src/messages/fr.ts"
+    },
+    "./messages/en": {
+      "types": "./src/messages/en.ts",
+      "default": "./src/messages/en.ts"
+    }
+  },
+  "scripts": {
+    "typecheck": "tsc --noEmit",
+    "lint": "biome check src"
+  },
+  "peerDependencies": {
+    "next-intl": "*"
+  },
+  "peerDependenciesMeta": {
+    "next-intl": { "optional": true }
+  },
+  "devDependencies": {
+    "typescript": "catalog:"
+  }
+}

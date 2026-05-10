@@ -1,0 +1,30 @@
+{
+  "name": "@ody/types",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "sideEffects": false,
+  "exports": {
+    ".": {
+      "types": "./src/index.ts",
+      "default": "./src/index.ts"
+    },
+    "./generated": {
+      "types": "./src/generated.ts",
+      "default": "./src/generated.ts"
+    }
+  },
+  "scripts": {
+    "gen": "tsx scripts/gen.ts",
+    "typecheck": "tsc --noEmit",
+    "clean": "rm -rf dist"
+  },
+  "devDependencies": {
+    "@ody/api": "workspace:*",
+    "@types/node": "catalog:",
+    "hono-openapi": "^0.4.8",
+    "openapi-typescript": "^7.9.1",
+    "tsx": "^4.21.0",
+    "typescript": "catalog:"
+  }
+}

@@ -1,0 +1,41 @@
+{
+  "name": "ody",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "engines": {
+    "node": ">=20.10.0"
+  },
+  "packageManager": "pnpm@10.24.0",
+  "scripts": {
+    "dev": "turbo run dev",
+    "dev:api": "turbo run dev --filter=@ody/api",
+    "dev:web": "turbo run dev --filter=@ody/web",
+    "build": "turbo run build",
+    "lint": "turbo run lint",
+    "lint:check": "turbo run lint:check",
+    "format": "turbo run format",
+    "format:check": "turbo run format:check",
+    "typecheck": "turbo run typecheck",
+    "test": "turbo run test",
+    "gen:types": "pnpm --filter @ody/types gen",
+    "db:make": "pnpm --filter @ody/db run make",
+    "db:migrate": "pnpm --filter @ody/db run migrate",
+    "db:up": "pnpm --filter @ody/db run up",
+    "db:down": "pnpm --filter @ody/db run down",
+    "db:redo": "pnpm --filter @ody/db run redo",
+    "db:status": "pnpm --filter @ody/db run status",
+    "db:seed": "pnpm --filter @ody/api seed",
+    "db:seed:legacy": "pnpm --filter @ody/db seed && pnpm --filter @ody/api seed:chef"
+  },
+  "devDependencies": {
+    "@biomejs/biome": "2.4.14",
+    "@eslint/js": "^10.0.1",
+    "@stylistic/eslint-plugin": "^5.10.0",
+    "eslint": "^10.3.0",
+    "globals": "^17.6.0",
+    "turbo": "^2.9.11",
+    "typescript": "catalog:",
+    "typescript-eslint": "^8.59.2"
+  }
+}

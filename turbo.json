@@ -1,0 +1,43 @@
+{
+  "$schema": "https://turbo.build/schema.json",
+  "globalPassThroughEnv": [
+    "NODE_ENV",
+    "PG_HOST",
+    "PG_PORT",
+    "PG_USER",
+    "PG_PASS",
+    "PG_DB",
+    "API_PORT",
+    "AUTH_SECRET",
+    "AUTH_URL",
+    "CORS_ORIGINS",
+    "NEXT_PUBLIC_API_URL"
+  ],
+  "tasks": {
+    "build": {
+      "dependsOn": ["^build"],
+      "outputs": ["dist/**", ".next/**", "!.next/cache/**"]
+    },
+    "dev": {
+      "persistent": true,
+      "cache": false
+    },
+    "typecheck": {
+      "dependsOn": ["^build"]
+    },
+    "lint": {},
+    "lint:check": {},
+    "format": {},
+    "format:check": {},
+    "test": {
+      "dependsOn": ["^build"]
+    },
+    "test:watch": {
+      "cache": false,
+      "persistent": true
+    },
+    "db:generate": { "cache": false },
+    "db:migrate": { "cache": false },
+    "db:seed": { "cache": false }
+  }
+}

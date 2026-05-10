@@ -1,0 +1,33 @@
+@import "tailwindcss";
+@import "@ody/ui/styles/tokens.css";
+@import "tw-animate-css";
+
+@source "../../../../packages/ui/src/**/*.{ts,tsx}";
+@source "../**/*.{ts,tsx}";
+
+@layer base {
+  html,
+  body {
+    background: var(--color-bg);
+    color: var(--color-ink);
+    font-family: var(--font-sans);
+    font-feature-settings: "ss01", "cv11";
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  :root {
+    color-scheme: light;
+  }
+
+  ::selection {
+    background: var(--color-accent-soft);
+    color: var(--color-ink);
+  }
+}
+
+@keyframes shimmer {
+  100% {
+    transform: translateX(100%);
+  }
+}

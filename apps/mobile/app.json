@@ -1,0 +1,34 @@
+{
+  "expo": {
+    "name": "Sève",
+    "slug": "seve",
+    "version": "0.1.0",
+    "orientation": "portrait",
+    "scheme": "seve",
+    "userInterfaceStyle": "light",
+    "newArchEnabled": true,
+    "splash": {
+      "backgroundColor": "#fbfaf6",
+      "resizeMode": "contain"
+    },
+    "ios": {
+      "supportsTablet": false,
+      "bundleIdentifier": "fr.seve.mobile"
+    },
+    "android": {
+      "package": "fr.seve.mobile",
+      "adaptiveIcon": {
+        "backgroundColor": "#fbfaf6"
+      }
+    },
+    "plugins": [
+      "expo-router",
+      "expo-secure-store",
+      "expo-font",
+      "expo-localization"
+    ],
+    "experiments": {
+      "typedRoutes": true
+    }
+  }
+}

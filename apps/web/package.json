@@ -1,0 +1,42 @@
+{
+  "name": "@ody/web",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "next dev --port 3000",
+    "build": "next build",
+    "start": "next start",
+    "lint": "biome check src",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@hookform/resolvers": "^5.2.2",
+    "@ody/i18n": "workspace:*",
+    "@ody/sdk": "workspace:*",
+    "@ody/types": "workspace:*",
+    "@ody/ui": "workspace:*",
+    "@tanstack/react-query": "catalog:",
+    "@tanstack/react-query-devtools": "catalog:",
+    "better-auth": "^1.6.9",
+    "date-fns": "^4.1.0",
+    "lucide-react": "catalog:",
+    "next": "^16.2.6",
+    "next-intl": "^4.4.1",
+    "react": "catalog:",
+    "react-dom": "catalog:",
+    "react-hook-form": "^7.75.0",
+    "sonner": "catalog:",
+    "zod": "catalog:"
+  },
+  "devDependencies": {
+    "@tailwindcss/postcss": "^4.3.0",
+    "@types/node": "catalog:",
+    "@types/react": "catalog:",
+    "@types/react-dom": "catalog:",
+    "postcss": "^8.5.14",
+    "tailwindcss": "catalog:",
+    "tw-animate-css": "catalog:",
+    "typescript": "catalog:"
+  }
+}

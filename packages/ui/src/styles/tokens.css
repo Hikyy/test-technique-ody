@@ -1,0 +1,51 @@
+@theme {
+  --color-bg: #fbfaf6;
+  --color-surface: #ffffff;
+
+  --color-ink: #15140f;
+  --color-ink-2: rgb(21 20 15 / 0.62);
+  --color-ink-3: rgb(21 20 15 / 0.42);
+  --color-ink-4: rgb(21 20 15 / 0.22);
+
+  --color-accent: #5b6e4f;
+  --color-accent-soft: #e9ebe2;
+  --color-accent-tint: rgb(91 110 79 / 0.1);
+
+  --color-pos: #3f6b3a;
+  --color-neg: #a14a3a;
+  --color-warn: #c98a4a;
+  --color-warn-soft: #fdf0e3;
+
+  --color-line: rgb(20 20 18 / 0.06);
+  --color-line-mid: rgb(20 20 18 / 0.1);
+  --color-line-strong: rgb(20 20 18 / 0.14);
+
+  --color-background: var(--color-bg);
+  --color-foreground: var(--color-ink);
+  --color-card: var(--color-surface);
+  --color-card-foreground: var(--color-ink);
+  --color-popover: var(--color-surface);
+  --color-popover-foreground: var(--color-ink);
+  --color-primary: var(--color-accent);
+  --color-primary-foreground: var(--color-bg);
+  --color-secondary: var(--color-accent-soft);
+  --color-secondary-foreground: var(--color-ink);
+  --color-muted: var(--color-accent-soft);
+  --color-muted-foreground: var(--color-ink-2);
+  --color-accent-foreground: var(--color-bg);
+  --color-destructive: var(--color-neg);
+  --color-destructive-foreground: var(--color-bg);
+  --color-border: var(--color-line);
+  --color-input: var(--color-line-mid);
+  --color-ring: var(--color-accent);
+
+  --radius-card: 0.75rem;
+  --radius-sm: 0.4375rem;
+  --radius-md: 0.5rem;
+  --radius-lg: 0.75rem;
+  --radius-xl: 1rem;
+
+  --font-sans: "Geist", -apple-system, system-ui, sans-serif;
+  --font-serif: "Instrument Serif", "Times New Roman", serif;
+  --font-mono: "Geist Mono", ui-monospace, monospace;
+}

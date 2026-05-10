@@ -1,0 +1,64 @@
+{
+  "name": "@ody/domain",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "sideEffects": false,
+  "exports": {
+    ".": {
+      "types": "./src/index.ts",
+      "default": "./src/index.ts"
+    },
+    "./shared-kernel": {
+      "types": "./src/shared-kernel/index.ts",
+      "default": "./src/shared-kernel/index.ts"
+    },
+    "./identity": {
+      "types": "./src/identity/index.ts",
+      "default": "./src/identity/index.ts"
+    },
+    "./customer": {
+      "types": "./src/customer/index.ts",
+      "default": "./src/customer/index.ts"
+    },
+    "./catalog": {
+      "types": "./src/catalog/index.ts",
+      "default": "./src/catalog/index.ts"
+    },
+    "./ordering": {
+      "types": "./src/ordering/index.ts",
+      "default": "./src/ordering/index.ts"
+    },
+    "./restaurant": {
+      "types": "./src/restaurant/index.ts",
+      "default": "./src/restaurant/index.ts"
+    },
+    "./notification": {
+      "types": "./src/notification/index.ts",
+      "default": "./src/notification/index.ts"
+    },
+    "./organization": {
+      "types": "./src/organization/index.ts",
+      "default": "./src/organization/index.ts"
+    }
+  },
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "lint": "biome check src",
+    "lint:check": "biome check src",
+    "format": "biome check src --write",
+    "format:check": "biome check src",
+    "clean": "rm -rf dist"
+  },
+  "devDependencies": {
+    "@biomejs/biome": "catalog:",
+    "typescript": "catalog:",
+    "vitest": "catalog:"
+  },
+  "dependencies": {
+    "zod": "catalog:"
+  }
+}
