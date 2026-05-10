@@ -1,10 +1,10 @@
-import { z } from 'zod';
-import type { User } from '../../domain/entities/user.js';
+import { z } from "zod";
+import type { User } from "../../domain/entities/user.js";
 
 export const userAttributesDataSchema = z.object({
   email: z.string().email(),
   name: z.string().min(1).max(120),
-  role: z.enum(['chef', 'server', 'admin']),
+  role: z.enum(["chef", "server", "admin"]),
   created_at: z.string().datetime(),
 });
 

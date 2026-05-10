@@ -1,5 +1,5 @@
-import { z } from 'zod';
-import type { User } from '../../domain/entities/user.js';
+import { z } from "zod";
+import type { User } from "../../domain/entities/user.js";
 
 export const userRelationshipsDataSchema = z.object({}).strict();
 

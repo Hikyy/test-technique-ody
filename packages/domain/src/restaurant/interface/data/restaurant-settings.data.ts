@@ -1,18 +1,18 @@
-import { z } from 'zod';
-import type { RestaurantSettings } from '../../domain/entities/restaurant-settings.js';
+import { z } from "zod";
+import type { RestaurantSettings } from "../../domain/entities/restaurant-settings.js";
 import {
   restaurantSettingsAttributesDataSchema,
   toRestaurantSettingsAttributesData,
-} from './restaurant-settings.attributes.data.js';
+} from "./restaurant-settings.attributes.data.js";
 import {
   restaurantSettingsRelationshipsDataSchema,
   toRestaurantSettingsRelationshipsData,
-} from './restaurant-settings.relationships.data.js';
+} from "./restaurant-settings.relationships.data.js";
 
-export const RESTAURANT_SETTINGS_RESOURCE_ID = 'current' as const;
+export const RESTAURANT_SETTINGS_RESOURCE_ID = "current" as const;
 
 export const restaurantSettingsDataSchema = z.object({
-  type: z.literal('restaurant-settings'),
+  type: z.literal("restaurant-settings"),
   id: z.literal(RESTAURANT_SETTINGS_RESOURCE_ID),
   attributes: restaurantSettingsAttributesDataSchema,
   relationships: restaurantSettingsRelationshipsDataSchema,
@@ -20,10 +20,8 @@ export const restaurantSettingsDataSchema = z.object({
 
 export type RestaurantSettingsData = z.infer<typeof restaurantSettingsDataSchema>;
 
-export const toRestaurantSettingsData = (
-  s: RestaurantSettings,
-): RestaurantSettingsData => ({
-  type: 'restaurant-settings',
+export const toRestaurantSettingsData = (s: RestaurantSettings): RestaurantSettingsData => ({
+  type: "restaurant-settings",
   id: RESTAURANT_SETTINGS_RESOURCE_ID,
   attributes: toRestaurantSettingsAttributesData(s),
   relationships: toRestaurantSettingsRelationshipsData(s),

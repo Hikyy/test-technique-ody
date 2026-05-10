@@ -1,19 +1,12 @@
-import { z } from 'zod';
-import type { Order } from '../../domain/entities/order.js';
-import {
-  orderAttributesDataSchema,
-  orderStatusSchema,
-  toOrderAttributesData,
-} from './order.attributes.data.js';
-import {
-  orderRelationshipsDataSchema,
-  toOrderRelationshipsData,
-} from './order.relationships.data.js';
+import { z } from "zod";
+import type { Order } from "../../domain/entities/order.js";
+import { orderAttributesDataSchema, orderStatusSchema, toOrderAttributesData } from "./order.attributes.data.js";
+import { orderRelationshipsDataSchema, toOrderRelationshipsData } from "./order.relationships.data.js";
 
 export { orderStatusSchema };
 
 export const orderDataSchema = z.object({
-  type: z.literal('orders'),
+  type: z.literal("orders"),
   id: z.string().uuid(),
   attributes: orderAttributesDataSchema,
   relationships: orderRelationshipsDataSchema,
@@ -22,7 +15,7 @@ export const orderDataSchema = z.object({
 export type OrderData = z.infer<typeof orderDataSchema>;
 
 export const toOrderData = (o: Order): OrderData => ({
-  type: 'orders',
+  type: "orders",
   id: o.id,
   attributes: toOrderAttributesData(o),
   relationships: toOrderRelationshipsData(o),

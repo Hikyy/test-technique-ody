@@ -1,5 +1,5 @@
-import { z } from 'zod';
-import type { OrderLine } from '../../domain/entities/order-line.js';
+import { z } from "zod";
+import type { OrderLine } from "../../domain/entities/order-line.js";
 
 export const orderLineAttributesDataSchema = z.object({
   qty: z.number().int().min(1).max(99),

@@ -1,6 +1,6 @@
-import { z } from 'zod';
-import type { Notification } from '../../domain/entities/notification.js';
-import { notificationTypeSchema } from '../../domain/value-objects/notification-type.js';
+import { z } from "zod";
+import type { Notification } from "../../domain/entities/notification.js";
+import { notificationTypeSchema } from "../../domain/value-objects/notification-type.js";
 
 export const notificationAttributesSchema = z.object({
   type: notificationTypeSchema,
@@ -12,7 +12,7 @@ export const notificationAttributesSchema = z.object({
 });
 
 export const notificationDataSchema = z.object({
-  type: z.literal('notifications'),
+  type: z.literal("notifications"),
   id: z.string().uuid(),
   attributes: notificationAttributesSchema,
 });
@@ -29,7 +29,7 @@ const toAttributes = (n: Notification): z.infer<typeof notificationAttributesSch
 });
 
 const toNotificationData = (n: Notification): NotificationDataType => ({
-  type: 'notifications',
+  type: "notifications",
   id: n.id,
   attributes: toAttributes(n),
 });

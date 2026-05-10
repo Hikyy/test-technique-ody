@@ -10,8 +10,11 @@ Monorepo (pnpm + turbo) qui héberge un SaaS de gestion d'un restaurant indépen
 
 ```bash
 pnpm install
+make lan-ip       # 📱 mobile via Expo Go : téléphone + Mac sur le MÊME Wi-Fi requis
 make dev          # ou : make menu  → choisir "dev"
 ```
+
+`make lan-ip` détecte ton IP LAN et patche `apps/mobile/.env` + le CORS de l'API. À refaire à chaque changement de Wi-Fi. Détails : [Mobile sur device physique](#-mobile-sur-device-physique).
 
 `make dev` orchestre :
 1. Docker Compose : Postgres + Mailpit
@@ -193,7 +196,7 @@ Chaque app a son `.env.example` à copier en `.env`.
 | `./.env` | Variables PG_* utilisées par Docker Compose et `make dev` |
 | `./apps/api/.env` | API (auth, mail, storage, CORS) — voir `apps/api/src/config.ts` (Zod) |
 | `./apps/web/.env.local` | `NEXT_PUBLIC_API_URL` |
-| `./apps/mobile/.env` | `EXPO_PUBLIC_API_URL` (utiliser l'IP LAN sur device physique — voir ci-dessous) |
+| `./apps/mobile/.env` | `EXPO_PUBLIC_API_URL` (utiliser l'IP LAN sur device physique) |
 | `./db/.env` | PG_* pour `node-pg-migrate` et le seeder |
 
 `make dev` initialise automatiquement `./.env` depuis `.env.example` au premier lancement. Les autres `.env` doivent être créés manuellement (sécurité : `AUTH_SECRET` notamment).
@@ -202,22 +205,32 @@ Chaque app a son `.env.example` à copier en `.env`.
 openssl rand -base64 32         # génère un AUTH_SECRET
 ```
 
-### Mobile sur device physique (Expo Go / build)
+---
 
-Un iPhone/Android ne peut pas joindre `http://localhost:3001` — il faut l'**IP LAN** du Mac. `make lan-ip` patche les `.env` automatiquement :
+## 📱 Mobile sur device physique
+
+Un iPhone/Android ne peut pas joindre `http://localhost:3001` de ton Mac — il faut l'**IP LAN**. Une seule commande s'en occupe :
 
 ```bash
 make lan-ip                       # auto-détecte (en0 → en1)
 make lan-ip IP=192.168.1.42       # force une IP spécifique
 ```
 
-Met à jour de façon idempotente : `apps/mobile/.env` (`EXPO_PUBLIC_API_URL`) + `apps/api/.env` & `./.env` (`CORS_ORIGINS`). À relancer à chaque changement de Wi-Fi, puis :
+Ce que ça met à jour, de façon idempotente :
 
+| Fichier | Clé | Valeur |
+|---|---|---|
+| `apps/mobile/.env` | `EXPO_PUBLIC_API_URL` | `http://<IP>:3001` |
+| `apps/api/.env` | `CORS_ORIGINS` | `localhost:3000, <IP>:{3000,3001,8081}` |
+| `./.env` | `CORS_ORIGINS` | idem |
+
+**Workflow quand tu changes de Wi-Fi :**
 ```bash
+make lan-ip
 pnpm --filter @ody/mobile start -c    # -c vide le cache Metro pour re-bundler EXPO_PUBLIC_*
 ```
 
-Téléphone et Mac doivent être sur le même Wi-Fi.
+**Prérequis :** téléphone et Mac sur le **même Wi-Fi**, et `make dev` (ou `make dev-api`) en marche côté Mac.
 
 ---
 

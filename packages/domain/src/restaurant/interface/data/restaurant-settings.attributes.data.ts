@@ -1,5 +1,5 @@
-import { z } from 'zod';
-import type { RestaurantSettings } from '../../domain/entities/restaurant-settings.js';
+import { z } from "zod";
+import type { RestaurantSettings } from "../../domain/entities/restaurant-settings.js";
 
 const dayHoursSchema = z
   .object({
@@ -25,22 +25,16 @@ export const restaurantSettingsAttributesDataSchema = z.object({
   contact_email: z.string().email().nullable(),
   opening_hours: weekScheduleSchema,
   notifications_enabled: z.boolean(),
-  currency: z.literal('EUR'),
+  currency: z.literal("EUR"),
   updated_at: z.string().datetime(),
 });
 
-export type RestaurantSettingsAttributesData = z.infer<
-  typeof restaurantSettingsAttributesDataSchema
->;
+export type RestaurantSettingsAttributesData = z.infer<typeof restaurantSettingsAttributesDataSchema>;
 
-const toDay = (
-  day: { openAt: string; closeAt: string } | null,
-): { open_at: string; close_at: string } | null =>
+const toDay = (day: { openAt: string; closeAt: string } | null): { open_at: string; close_at: string } | null =>
   day ? { open_at: day.openAt, close_at: day.closeAt } : null;
 
-export const toRestaurantSettingsAttributesData = (
-  s: RestaurantSettings,
-): RestaurantSettingsAttributesData => ({
+export const toRestaurantSettingsAttributesData = (s: RestaurantSettings): RestaurantSettingsAttributesData => ({
   name: s.name,
   address: s.address,
   phone: s.phone?.value ?? null,
@@ -55,6 +49,6 @@ export const toRestaurantSettingsAttributesData = (
     sunday: toDay(s.openingHours.schedule.sunday),
   },
   notifications_enabled: s.notificationsEnabled,
-  currency: 'EUR',
+  currency: "EUR",
   updated_at: s.updatedAt.toISOString(),
 });

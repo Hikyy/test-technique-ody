@@ -1,13 +1,8 @@
-import { z } from 'zod';
-import type { Order } from '../../domain/entities/order.js';
-import {
-  ORDER_STATUS_VALUES,
-  type OrderStatusValue,
-} from '../../domain/value-objects/order-status.js';
+import { z } from "zod";
+import type { Order } from "../../domain/entities/order.js";
+import { ORDER_STATUS_VALUES, type OrderStatusValue } from "../../domain/value-objects/order-status.js";
 
-export const orderStatusSchema = z.enum(
-  ORDER_STATUS_VALUES as readonly [OrderStatusValue, ...OrderStatusValue[]],
-);
+export const orderStatusSchema = z.enum(ORDER_STATUS_VALUES as readonly [OrderStatusValue, ...OrderStatusValue[]]);
 
 export const orderAttributesDataSchema = z.object({
   table_number: z.number().int().min(1).max(99),

@@ -1,5 +1,5 @@
-import { z } from 'zod';
-import type { Customer } from '../../domain/entities/customer.js';
+import { z } from "zod";
+import type { Customer } from "../../domain/entities/customer.js";
 
 export const customerAttributesDataSchema = z.object({
   first_name: z.string().min(1).max(80),

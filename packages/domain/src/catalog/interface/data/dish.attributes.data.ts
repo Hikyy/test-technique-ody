@@ -1,5 +1,5 @@
-import { z } from 'zod';
-import type { Dish } from '../../domain/entities/dish.js';
+import { z } from "zod";
+import type { Dish } from "../../domain/entities/dish.js";
 
 export const dishAttributesDataSchema = z.object({
   name: z.string().min(1).max(120),

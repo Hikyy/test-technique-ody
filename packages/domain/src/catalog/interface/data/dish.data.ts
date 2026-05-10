@@ -1,16 +1,10 @@
-import { z } from 'zod';
-import type { Dish } from '../../domain/entities/dish.js';
-import {
-  dishAttributesDataSchema,
-  toDishAttributesData,
-} from './dish.attributes.data.js';
-import {
-  dishRelationshipsDataSchema,
-  toDishRelationshipsData,
-} from './dish.relationships.data.js';
+import { z } from "zod";
+import type { Dish } from "../../domain/entities/dish.js";
+import { dishAttributesDataSchema, toDishAttributesData } from "./dish.attributes.data.js";
+import { dishRelationshipsDataSchema, toDishRelationshipsData } from "./dish.relationships.data.js";
 
 export const dishDataSchema = z.object({
-  type: z.literal('dishes'),
+  type: z.literal("dishes"),
   id: z.string().uuid(),
   attributes: dishAttributesDataSchema,
   relationships: dishRelationshipsDataSchema,
@@ -19,7 +13,7 @@ export const dishDataSchema = z.object({
 export type DishData = z.infer<typeof dishDataSchema>;
 
 export const toDishData = (d: Dish): DishData => ({
-  type: 'dishes',
+  type: "dishes",
   id: d.id,
   attributes: toDishAttributesData(d),
   relationships: toDishRelationshipsData(d),

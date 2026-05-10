@@ -1,5 +1,5 @@
-import { z } from 'zod';
-import type { Category } from '../../domain/entities/category.js';
+import { z } from "zod";
+import type { Category } from "../../domain/entities/category.js";
 
 export const categoryAttributesDataSchema = z.object({
   name: z.string().min(1).max(80),
