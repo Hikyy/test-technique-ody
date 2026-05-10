@@ -31,7 +31,6 @@ ENV HOSTNAME=0.0.0.0
 RUN addgroup -g 1001 -S nodejs && adduser -S nextjs -u 1001
 COPY --from=build --chown=nextjs:nodejs /repo/apps/web/.next/standalone /app
 COPY --from=build --chown=nextjs:nodejs /repo/apps/web/.next/static /app/apps/web/.next/static
-COPY --from=build --chown=nextjs:nodejs /repo/apps/web/public /app/apps/web/public
 USER nextjs
 EXPOSE 3000
 HEALTHCHECK --interval=30s --timeout=5s --start-period=20s --retries=3 \
