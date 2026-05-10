@@ -3,7 +3,7 @@
 FROM node:24-alpine AS deps
 WORKDIR /repo
 RUN corepack enable
-COPY package.json pnpm-workspace.yaml pnpm-lock.yaml ./
+COPY package.json pnpm-workspace.yaml pnpm-lock.yaml .npmrc ./
 COPY turbo.json tsconfig.base.json biome.json ./
 COPY apps/web/package.json apps/web/package.json
 COPY packages/sdk/package.json packages/sdk/package.json
