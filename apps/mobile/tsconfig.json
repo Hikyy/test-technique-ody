@@ -15,7 +15,7 @@
     "module": "ESNext",
     "target": "ES2022",
     "lib": ["ES2022", "DOM"],
-    "types": ["nativewind/types"],
+    "types": ["nativewind/types", "node"],
     "paths": {
       "@/*": ["./src/*"]
     }
