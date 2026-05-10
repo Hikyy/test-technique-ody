@@ -92,6 +92,14 @@ function buildUrl(path: string, query?: FetchOptions["query"]): string {
   return url.toString();
 }
 
+function redirectToLoginIfUnauthorized(res: Response): void {
+  if (res.status !== 401) return;
+  if (typeof window === "undefined") return;
+  if (window.location.pathname.startsWith("/login")) return;
+  const next = window.location.pathname + window.location.search;
+  window.location.assign(`/login?next=${encodeURIComponent(next)}`);
+}
+
 async function parseError(res: Response): Promise<ApiError> {
   let body: JsonApiErrorBody | undefined;
   try {
@@ -157,7 +165,10 @@ export async function apiFetch<T>(path: string, options: FetchOptions = {}): Pro
   if (res.status === 401 && !options.skipRetry) {
     res = await rawFetch(path, options);
   }
-  if (!res.ok) throw await parseError(res);
+  if (!res.ok) {
+    redirectToLoginIfUnauthorized(res);
+    throw await parseError(res);
+  }
 
   const body = await readBody<JsonApiResource<T> | T>(res);
   if (body === undefined) return undefined as T;
@@ -173,7 +184,10 @@ export async function apiList<T, I = unknown>(path: string, options: FetchOption
   if (res.status === 401 && !options.skipRetry) {
     res = await rawFetch(path, options);
   }
-  if (!res.ok) throw await parseError(res);
+  if (!res.ok) {
+    redirectToLoginIfUnauthorized(res);
+    throw await parseError(res);
+  }
 
   const body = await readBody<JsonApiCollection<T, I>>(res);
   if (!body || !Array.isArray(body.data)) {
@@ -195,7 +209,10 @@ export async function apiSingleEnvelope<T, I = unknown>(
   if (res.status === 401 && !options.skipRetry) {
     res = await rawFetch(path, options);
   }
-  if (!res.ok) throw await parseError(res);
+  if (!res.ok) {
+    redirectToLoginIfUnauthorized(res);
+    throw await parseError(res);
+  }
   const body = await readBody<JsonApiResource<T, I>>(res);
   if (!body || !("data" in body)) {
     throw new ApiError(500, "INVALID_RESPONSE", "Missing data envelope");
@@ -232,7 +249,10 @@ export async function apiUpload<T>(path: string, formData: FormData): Promise<T>
     throw new ApiError(0, "NETWORK_ERROR", err.message);
   });
 
-  if (!res.ok) throw await parseError(res);
+  if (!res.ok) {
+    redirectToLoginIfUnauthorized(res);
+    throw await parseError(res);
+  }
 
   const body = await readBody<JsonApiResource<T>>(res);
 

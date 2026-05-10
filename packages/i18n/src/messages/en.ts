@@ -13,6 +13,7 @@ export const en = {
     add: "Add",
     search: "Search",
     searchPlaceholder: "Search…",
+    signOut: "Sign out",
     filter: "Filter",
     all: "All",
     none: "None",

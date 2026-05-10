@@ -84,9 +84,24 @@ function AppShellInner({ children }: { children: ReactNode }) {
     router.push(qs ? `${target}?${qs}` : target);
   };
 
+  const handleSignOut = async () => {
+    try {
+      await fetch("/logout", { method: "POST", credentials: "include" });
+    } finally {
+      router.replace("/login");
+      router.refresh();
+    }
+  };
+
   return (
     <AppShell
-      sidebarProps={{ activeKey, user: sidebarUser, headerSlot: <TenantSwitcher /> }}
+      sidebarProps={{
+        activeKey,
+        user: sidebarUser,
+        headerSlot: <TenantSwitcher />,
+        onSignOut: handleSignOut,
+        signOutLabel: tCommon("signOut"),
+      }}
       topbarProps={{
         searchValue: search,
         searchPlaceholder: tCommon("searchPlaceholder"),

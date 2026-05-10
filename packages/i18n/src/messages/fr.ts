@@ -13,6 +13,7 @@ export const fr = {
     add: "Ajouter",
     search: "Rechercher",
     searchPlaceholder: "Rechercher…",
+    signOut: "Se déconnecter",
     filter: "Filtrer",
     all: "Tous",
     none: "Aucun",

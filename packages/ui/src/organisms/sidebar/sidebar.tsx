@@ -1,6 +1,6 @@
 "use client";
 
-import { BookOpen, Calendar, Home, Settings, Users, Utensils } from "lucide-react";
+import { BookOpen, Calendar, Home, LogOut, Settings, Users, Utensils } from "lucide-react";
 import * as React from "react";
 import { Avatar, AvatarFallback } from "../../atoms/avatar/avatar";
 import { cn } from "../../lib/cn";
@@ -36,6 +36,8 @@ export interface SidebarProps {
   headerSlot?: React.ReactNode;
   linkAs?: (props: { href: string; className: string; children: React.ReactNode }) => React.ReactNode;
   className?: string;
+  onSignOut?: () => void;
+  signOutLabel?: string;
 }
 
 function defaultLink({ href, className, children }: { href: string; className: string; children: React.ReactNode }) {
@@ -53,6 +55,8 @@ export function Sidebar({
   headerSlot,
   linkAs = defaultLink,
   className,
+  onSignOut,
+  signOutLabel = "Se déconnecter",
 }: SidebarProps) {
   return (
     <aside className={cn("flex h-full w-[232px] flex-col border-r border-line bg-bg px-4 py-[22px]", className)}>
@@ -93,10 +97,21 @@ export function Sidebar({
           <Avatar className="size-7">
             <AvatarFallback>{user.initials ?? user.name.slice(0, 2).toUpperCase()}</AvatarFallback>
           </Avatar>
-          <div className="leading-tight">
-            <div className="text-[12.5px] font-medium text-ink">{user.name}</div>
-            <div className="text-[11px] text-ink-3">{user.role}</div>
+          <div className="min-w-0 flex-1 leading-tight">
+            <div className="truncate text-[12.5px] font-medium text-ink">{user.name}</div>
+            <div className="truncate text-[11px] text-ink-3">{user.role}</div>
           </div>
+          {onSignOut ? (
+            <button
+              type="button"
+              onClick={onSignOut}
+              aria-label={signOutLabel}
+              title={signOutLabel}
+              className="grid size-7 shrink-0 place-items-center rounded-sm text-ink-3 transition-colors hover:bg-accent-soft hover:text-ink"
+            >
+              <LogOut className="size-3.5" />
+            </button>
+          ) : null}
         </div>
       ) : null}
     </aside>
