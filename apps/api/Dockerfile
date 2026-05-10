@@ -19,6 +19,7 @@ RUN corepack enable
 COPY --from=deps /repo /repo
 COPY . .
 RUN pnpm --filter @ody/api build
+RUN pnpm --filter @ody/api exec tsc -p tsconfig.scripts.json
 
 FROM node:24-alpine AS runtime
 WORKDIR /app
