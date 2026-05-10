@@ -4,42 +4,53 @@
   "private": true,
   "type": "module",
   "sideEffects": false,
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
   "exports": {
     ".": {
-      "types": "./src/index.ts",
-      "default": "./src/index.ts"
+      "source": "./src/index.ts",
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
     },
     "./shared-kernel": {
-      "types": "./src/shared-kernel/index.ts",
-      "default": "./src/shared-kernel/index.ts"
+      "source": "./src/shared-kernel/index.ts",
+      "types": "./dist/shared-kernel/index.d.ts",
+      "default": "./dist/shared-kernel/index.js"
     },
     "./identity": {
-      "types": "./src/identity/index.ts",
-      "default": "./src/identity/index.ts"
+      "source": "./src/identity/index.ts",
+      "types": "./dist/identity/index.d.ts",
+      "default": "./dist/identity/index.js"
     },
     "./customer": {
-      "types": "./src/customer/index.ts",
-      "default": "./src/customer/index.ts"
+      "source": "./src/customer/index.ts",
+      "types": "./dist/customer/index.d.ts",
+      "default": "./dist/customer/index.js"
     },
     "./catalog": {
-      "types": "./src/catalog/index.ts",
-      "default": "./src/catalog/index.ts"
+      "source": "./src/catalog/index.ts",
+      "types": "./dist/catalog/index.d.ts",
+      "default": "./dist/catalog/index.js"
     },
     "./ordering": {
-      "types": "./src/ordering/index.ts",
-      "default": "./src/ordering/index.ts"
+      "source": "./src/ordering/index.ts",
+      "types": "./dist/ordering/index.d.ts",
+      "default": "./dist/ordering/index.js"
     },
     "./restaurant": {
-      "types": "./src/restaurant/index.ts",
-      "default": "./src/restaurant/index.ts"
+      "source": "./src/restaurant/index.ts",
+      "types": "./dist/restaurant/index.d.ts",
+      "default": "./dist/restaurant/index.js"
     },
     "./notification": {
-      "types": "./src/notification/index.ts",
-      "default": "./src/notification/index.ts"
+      "source": "./src/notification/index.ts",
+      "types": "./dist/notification/index.d.ts",
+      "default": "./dist/notification/index.js"
     },
     "./organization": {
-      "types": "./src/organization/index.ts",
-      "default": "./src/organization/index.ts"
+      "source": "./src/organization/index.ts",
+      "types": "./dist/organization/index.d.ts",
+      "default": "./dist/organization/index.js"
     }
   },
   "scripts": {

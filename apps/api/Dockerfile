@@ -18,7 +18,7 @@ WORKDIR /repo
 RUN corepack enable
 COPY --from=deps /repo /repo
 COPY . .
-RUN pnpm --filter @ody/api build
+RUN pnpm turbo run build --filter=@ody/api
 
 FROM node:24-alpine AS runtime
 WORKDIR /app

@@ -3,27 +3,33 @@
   "version": "0.1.0",
   "private": true,
   "type": "module",
-  "main": "./src/index.ts",
-  "types": "./src/index.ts",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
   "exports": {
     ".": {
-      "types": "./src/index.ts",
-      "default": "./src/index.ts"
+      "source": "./src/index.ts",
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
     },
     "./schema": {
-      "types": "./src/schema.ts",
-      "default": "./src/schema.ts"
+      "source": "./src/schema.ts",
+      "types": "./dist/schema.d.ts",
+      "default": "./dist/schema.js"
     },
     "./client": {
-      "types": "./src/client.ts",
-      "default": "./src/client.ts"
+      "source": "./src/client.ts",
+      "types": "./dist/client.d.ts",
+      "default": "./dist/client.js"
     },
     "./seed-data": {
-      "types": "./src/seed-data/index.ts",
-      "default": "./src/seed-data/index.ts"
+      "source": "./src/seed-data/index.ts",
+      "types": "./dist/seed-data/index.d.ts",
+      "default": "./dist/seed-data/index.js"
     }
   },
   "scripts": {
+    "build": "tsc -p tsconfig.build.json",
+    "clean": "rm -rf dist",
     "make": "node scripts/migrate.mjs create -j ts",
     "migrate": "node scripts/migrate.mjs up",
     "up": "node scripts/migrate.mjs up",
