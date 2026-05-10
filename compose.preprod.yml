@@ -1,0 +1,118 @@
+x-restart: &restart
+  restart: unless-stopped
+
+services:
+  postgres:
+    image: postgres:18-alpine
+    <<: *restart
+    environment:
+      POSTGRES_USER: ${PG_USER:-ody}
+      POSTGRES_PASSWORD: ${PG_PASS:?PG_PASS required}
+      POSTGRES_DB: ${PG_DB:-ody}
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U $${POSTGRES_USER} -d $${POSTGRES_DB}"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 20s
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+    networks:
+      - internal
+
+  api:
+    image: ${API_IMAGE:-ghcr.io/hikyy/test-technique-ody-api:latest}
+    build:
+      context: .
+      dockerfile: apps/api/Dockerfile
+    <<: *restart
+    depends_on:
+      postgres:
+        condition: service_healthy
+    environment:
+      NODE_ENV: production
+      API_PORT: 3001
+      PG_HOST: postgres
+      PG_PORT: 5432
+      PG_USER: ${PG_USER:-ody}
+      PG_PASS: ${PG_PASS}
+      PG_DB: ${PG_DB:-ody}
+      AUTH_SECRET: ${AUTH_SECRET:?AUTH_SECRET required (32+ chars)}
+      AUTH_URL: ${AUTH_URL:?AUTH_URL required, e.g. https://api.example.com}
+      CORS_ORIGINS: ${CORS_ORIGINS:?CORS_ORIGINS required, e.g. https://app.example.com}
+      WEB_URL: ${WEB_URL:?WEB_URL required, e.g. https://app.example.com}
+      LOG_LEVEL: ${LOG_LEVEL:-info}
+      STORAGE_DIR: /data/storage
+      STORAGE_PUBLIC_PATH: /storage
+      UPLOAD_MAX_BYTES: ${UPLOAD_MAX_BYTES:-2097152}
+      MAIL_HOST: ${MAIL_HOST:-mailpit}
+      MAIL_PORT: ${MAIL_PORT:-1025}
+      MAIL_USER: ${MAIL_USER:-}
+      MAIL_PASS: ${MAIL_PASS:-}
+      MAIL_FROM: ${MAIL_FROM:-Sève <noreply@example.com>}
+      MAIL_SECURE: ${MAIL_SECURE:-false}
+      RUN_MIGRATIONS: "1"
+      RUN_SEED: ${RUN_SEED:-0}
+    volumes:
+      - api-storage:/data/storage
+    healthcheck:
+      test: ["CMD-SHELL", "wget -q --spider http://localhost:3001/health || exit 1"]
+      interval: 30s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
+    ports:
+      - "${API_PORT:-3001}:3001"
+    networks:
+      - internal
+
+  web:
+    image: ${WEB_IMAGE:-ghcr.io/hikyy/test-technique-ody-web:latest}
+    build:
+      context: .
+      dockerfile: apps/web/Dockerfile
+      args:
+        NEXT_PUBLIC_API_URL: ${NEXT_PUBLIC_API_URL}
+    <<: *restart
+    depends_on:
+      api:
+        condition: service_healthy
+    environment:
+      NODE_ENV: production
+      PORT: 3000
+      HOSTNAME: 0.0.0.0
+      NEXT_PUBLIC_API_URL: ${NEXT_PUBLIC_API_URL:?NEXT_PUBLIC_API_URL required, e.g. https://api.example.com}
+    healthcheck:
+      test: ["CMD-SHELL", "wget -q --spider http://localhost:3000/ || exit 1"]
+      interval: 30s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
+    ports:
+      - "${WEB_PORT:-3000}:3000"
+    networks:
+      - internal
+
+  mailpit:
+    image: axllent/mailpit:latest
+    profiles: ["mail"]
+    <<: *restart
+    environment:
+      MP_MAX_MESSAGES: "5000"
+      MP_SMTP_AUTH_ACCEPT_ANY: "1"
+      MP_SMTP_AUTH_ALLOW_INSECURE: "1"
+    volumes:
+      - mailpit-data:/data
+    ports:
+      - "${MAIL_WEB_PORT:-8025}:8025"
+    networks:
+      - internal
+
+volumes:
+  postgres-data:
+  api-storage:
+  mailpit-data:
+
+networks:
+  internal:
+    driver: bridge
