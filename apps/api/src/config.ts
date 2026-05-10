@@ -41,6 +41,10 @@ const ConfigSchema = z.object({
     .default("false")
     .transform((v) => v === "true" || v === "1"),
   WEB_URL: z.string().url().default("http://localhost:3000"),
+  COOKIE_DOMAIN: z
+    .string()
+    .optional()
+    .transform((v) => (v && v.length > 0 ? v : undefined)),
 });
 
 export type AppConfig = z.infer<typeof ConfigSchema>;

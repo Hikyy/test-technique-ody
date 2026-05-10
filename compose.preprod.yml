@@ -48,6 +48,7 @@ services:
       AUTH_URL: ${SERVICE_URL_API}
       WEB_URL: ${SERVICE_URL_WEB}
       CORS_ORIGINS: ${SERVICE_URL_WEB}
+      COOKIE_DOMAIN: ${COOKIE_DOMAIN:-}
       LOG_LEVEL: ${LOG_LEVEL:-info}
       STORAGE_DIR: /data/storage
       STORAGE_PUBLIC_PATH: /storage

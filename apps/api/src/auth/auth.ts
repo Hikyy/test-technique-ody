@@ -65,7 +65,14 @@ export const auth = betterAuth({
   },
   advanced: {
     cookiePrefix: "seve",
-    useSecureCookies: config.NODE_ENV === "production",
+    useSecureCookies: config.AUTH_URL.startsWith("https://"),
+    crossSubDomainCookies: config.COOKIE_DOMAIN
+      ? { enabled: true, domain: config.COOKIE_DOMAIN }
+      : { enabled: false },
+    defaultCookieAttributes: {
+      sameSite: "lax",
+      secure: config.AUTH_URL.startsWith("https://"),
+    },
     database: {
       generateId: false,
     },
