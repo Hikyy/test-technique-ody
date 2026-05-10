@@ -35,7 +35,7 @@ MOBILE  := @ody/mobile
         db-up db-down db-restart db-logs db-psql db-reset \
         db-migrate db-make db-migrate-up db-migrate-down db-redo db-status \
         compose-up compose-down compose-logs compose-ps \
-        env doctor versions
+        env env-lan lan-ip _set-env doctor versions
 
 # ============================================================================
 #  HELP
@@ -221,6 +221,39 @@ env: ## Crée .env à partir de .env.example si absent
 		printf "$(C_GREEN)✓ .env créé depuis .env.example$(C_RESET)\n"; \
 	else \
 		printf "$(C_YELLOW)• .env existe déjà$(C_RESET)\n"; \
+	fi
+
+lan-ip: ## Détecte l'IP LAN et patche mobile/api/.env (override: make lan-ip IP=192.168.x.x)
+	@IP="$(IP)"; \
+	if [ -z "$$IP" ]; then \
+		IP=$$(ipconfig getifaddr en0 2>/dev/null || ipconfig getifaddr en1 2>/dev/null || true); \
+	fi; \
+	if [ -z "$$IP" ]; then \
+		printf "$(C_RED)✗ Aucune IP LAN détectée. Force avec: make lan-ip IP=192.168.x.x$(C_RESET)\n"; exit 1; \
+	fi; \
+	printf "$(C_BLUE)→ IP LAN: $(C_BOLD)%s$(C_RESET)\n" "$$IP"; \
+	API_URL="http://$$IP:3001"; \
+	CORS="http://localhost:3000,http://$$IP:3000,http://$$IP:3001,http://$$IP:8081"; \
+	for f in apps/mobile/.env apps/api/.env .env; do \
+		dir=$$(dirname "$$f"); \
+		if [ ! -f "$$f" ] && [ -f "$$dir/.env.example" ]; then cp "$$dir/.env.example" "$$f"; fi; \
+		[ -f "$$f" ] || touch "$$f"; \
+	done; \
+	$(MAKE) -s _set-env FILE=apps/mobile/.env KEY=EXPO_PUBLIC_API_URL VALUE="$$API_URL"; \
+	$(MAKE) -s _set-env FILE=apps/api/.env    KEY=CORS_ORIGINS         VALUE="$$CORS"; \
+	$(MAKE) -s _set-env FILE=.env             KEY=CORS_ORIGINS         VALUE="$$CORS"; \
+	printf "$(C_GREEN)✓ .env mis à jour pour LAN ($$IP)$(C_RESET)\n"; \
+	printf "$(C_DIM)  → relance Expo avec cache vidé: pnpm --filter @ody/mobile start -c$(C_RESET)\n"
+
+env-lan: lan-ip ## Alias de lan-ip
+
+# Helper : upsert KEY=VALUE dans FILE (idempotent, indépendant de sed BSD/GNU)
+_set-env:
+	@tmp=$$(mktemp); \
+	if grep -q "^$(KEY)=" "$(FILE)" 2>/dev/null; then \
+		awk -v k="$(KEY)" -v v="$(VALUE)" 'BEGIN{FS=OFS="="} $$1==k{print k"="v; next} {print}' "$(FILE)" > "$$tmp" && mv "$$tmp" "$(FILE)"; \
+	else \
+		cp "$(FILE)" "$$tmp" && printf "%s=%s\n" "$(KEY)" "$(VALUE)" >> "$$tmp" && mv "$$tmp" "$(FILE)"; \
 	fi
 
 versions: ## Affiche les versions installées
