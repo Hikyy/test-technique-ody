@@ -45,7 +45,8 @@
         "noNonNullAssertion": "info"
       },
       "suspicious": {
-        "noExplicitAny": "info"
+        "noExplicitAny": "info",
+        "noUnknownAtRules": "off"
       }
     }
   },
@@ -56,9 +57,7 @@
   },
   "overrides": [
     {
-      "includes": [
-        "**/*.astro"
-      ],
+      "includes": ["**/*.astro"],
       "linter": {
         "rules": {
           "style": {
