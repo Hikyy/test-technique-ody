@@ -28,6 +28,7 @@ RUN apk add --no-cache tini wget
 RUN addgroup -g 1001 -S nodejs && adduser -S api -u 1001
 COPY --from=build --chown=api:nodejs /repo/apps/api/dist /app/apps/api/dist
 COPY --from=build --chown=api:nodejs /repo/apps/api/package.json /app/apps/api/package.json
+COPY --from=build --chown=api:nodejs /repo/apps/api/node_modules /app/apps/api/node_modules
 COPY --from=build --chown=api:nodejs /repo/db /app/db
 COPY --from=build --chown=api:nodejs /repo/packages /app/packages
 COPY --from=build --chown=api:nodejs /repo/node_modules /app/node_modules
