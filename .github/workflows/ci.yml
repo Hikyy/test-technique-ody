@@ -44,6 +44,9 @@ jobs:
 
       - name: Test
         run: pnpm -r test
+        env:
+          AUTH_SECRET: ci-only-test-secret-not-used-in-prod-1234567890
+          NODE_ENV: test
 
   build:
     name: Build
