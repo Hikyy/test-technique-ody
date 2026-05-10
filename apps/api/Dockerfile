@@ -19,7 +19,6 @@ RUN corepack enable
 COPY --from=deps /repo /repo
 COPY . .
 RUN pnpm --filter @ody/api build
-RUN pnpm --filter @ody/api exec tsc -p tsconfig.scripts.json
 
 FROM node:24-alpine AS runtime
 WORKDIR /app
@@ -40,4 +39,4 @@ EXPOSE 3001
 HEALTHCHECK --interval=30s --timeout=5s --start-period=20s --retries=3 \
   CMD wget --quiet --tries=1 --spider http://localhost:3001/health || exit 1
 ENTRYPOINT ["/sbin/tini", "--", "/usr/local/bin/docker-entrypoint.sh"]
-CMD ["node", "apps/api/dist/main.js"]
+CMD ["node", "apps/api/dist/src/main.js"]
