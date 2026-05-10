@@ -28,7 +28,9 @@ export const up = async (pgm: MigrationBuilder): Promise<void> => {
   pgm.sql(`DROP INDEX IF EXISTS "customers_restaurant_id_idx";`);
   pgm.sql(`ALTER TABLE customers DROP COLUMN restaurant_id;`);
   pgm.createIndex("customers", ["organization_id", "email"], { name: "customers_organization_email_idx" });
-  pgm.createIndex("customers", ["organization_id", "last_name", "first_name"], { name: "customers_organization_name_idx" });
+  pgm.createIndex("customers", ["organization_id", "last_name", "first_name"], {
+    name: "customers_organization_name_idx",
+  });
   pgm.createIndex("customers", "organization_id", { name: "customers_organization_id_idx" });
 
   // -------- categories --------
@@ -92,7 +94,9 @@ export const up = async (pgm: MigrationBuilder): Promise<void> => {
   pgm.sql(`DROP INDEX IF EXISTS "dishes_restaurant_category_available_idx";`);
   pgm.sql(`DROP INDEX IF EXISTS "dishes_restaurant_id_idx";`);
   pgm.sql(`ALTER TABLE dishes DROP COLUMN restaurant_id;`);
-  pgm.createIndex("dishes", ["organization_id", "category_id", "available"], { name: "dishes_organization_category_available_idx" });
+  pgm.createIndex("dishes", ["organization_id", "category_id", "available"], {
+    name: "dishes_organization_category_available_idx",
+  });
   pgm.createIndex("dishes", "organization_id", { name: "dishes_organization_id_idx" });
 };
 

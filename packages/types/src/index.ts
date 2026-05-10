@@ -1,6 +1,6 @@
 import type { paths } from "./generated.js";
 
-export type { paths, components, operations } from "./generated.js";
+export type { components, operations, paths } from "./generated.js";
 
 export type JsonApiResource<TType extends string, TAttrs> = {
   type: TType;
@@ -36,37 +36,30 @@ export type JsonApiErrors = { errors: JsonApiError[] };
 
 type Json<T> = T extends { content: { "application/json": infer C } } ? C : never;
 type AtPath<P> = P extends keyof paths ? paths[P] : never;
-type AtOp<P, M extends string> = AtPath<P> extends infer T
-  ? T extends Record<string, unknown>
-    ? M extends keyof T
-      ? T[M]
+type AtOp<P, M extends string> =
+  AtPath<P> extends infer T ? (T extends Record<string, unknown> ? (M extends keyof T ? T[M] : never) : never) : never;
+type RequestJson<P, M extends string> = AtOp<P, M> extends { requestBody: infer B } ? Json<B> : never;
+type ResponseJson<P, M extends string, S extends number> =
+  AtOp<P, M> extends {
+    responses: infer R;
+  }
+    ? S extends keyof R
+      ? Json<R[S]>
       : never
-    : never
-  : never;
-type RequestJson<P, M extends string> = AtOp<P, M> extends { requestBody: infer B }
-  ? Json<B>
-  : never;
-type ResponseJson<P, M extends string, S extends number> = AtOp<P, M> extends {
-  responses: infer R;
-}
-  ? S extends keyof R
-    ? Json<R[S]>
-    : never
-  : never;
+    : never;
 
 type SingleData<T> = T extends { data: infer D } ? D : never;
 type CollectionItem<T> = T extends { data: Array<infer D> } ? D : never;
-type QueryOf<P, M extends string> = AtOp<P, M> extends { parameters: { query: infer Q } }
-  ? Q
-  : never;
+type QueryOf<P, M extends string> = AtOp<P, M> extends { parameters: { query: infer Q } } ? Q : never;
 type Attributes<T> = T extends { attributes: infer A } ? A : never;
 type RelationshipsOf<T> = T extends { relationships: infer R } ? R : never;
 
 export type CustomerCollectionResponse = ResponseJson<"/api/customers", "get", 200>;
 export type CustomerSingleResponse = ResponseJson<"/api/customers/{id}", "get", 200>;
-export type CustomerData = CollectionItem<CustomerCollectionResponse> extends never
-  ? SingleData<CustomerSingleResponse>
-  : CollectionItem<CustomerCollectionResponse>;
+export type CustomerData =
+  CollectionItem<CustomerCollectionResponse> extends never
+    ? SingleData<CustomerSingleResponse>
+    : CollectionItem<CustomerCollectionResponse>;
 export type CustomerAttributesData = Attributes<CustomerData>;
 export type CustomerRelationshipsData = RelationshipsOf<CustomerData>;
 export type CreateCustomerDTO = RequestJson<"/api/customers", "post">;
@@ -75,9 +68,10 @@ export type ListCustomersFiltersDTO = QueryOf<"/api/customers", "get">;
 
 export type OrderCollectionResponse = ResponseJson<"/api/orders", "get", 200>;
 export type OrderSingleResponse = ResponseJson<"/api/orders/{id}", "get", 200>;
-export type OrderData = CollectionItem<OrderCollectionResponse> extends never
-  ? SingleData<OrderSingleResponse>
-  : CollectionItem<OrderCollectionResponse>;
+export type OrderData =
+  CollectionItem<OrderCollectionResponse> extends never
+    ? SingleData<OrderSingleResponse>
+    : CollectionItem<OrderCollectionResponse>;
 export type OrderAttributesData = Attributes<OrderData>;
 export type OrderRelationshipsData = RelationshipsOf<OrderData>;
 export type CreateOrderDTO = RequestJson<"/api/orders", "post">;
@@ -100,9 +94,10 @@ export type OrderShowResponse = OrderSingleResponse;
 
 export type DishCollectionResponse = ResponseJson<"/api/menu/dishes", "get", 200>;
 export type DishSingleResponse = ResponseJson<"/api/menu/dishes/{id}", "get", 200>;
-export type DishData = CollectionItem<DishCollectionResponse> extends never
-  ? SingleData<DishSingleResponse>
-  : CollectionItem<DishCollectionResponse>;
+export type DishData =
+  CollectionItem<DishCollectionResponse> extends never
+    ? SingleData<DishSingleResponse>
+    : CollectionItem<DishCollectionResponse>;
 export type DishAttributesData = Attributes<DishData>;
 export type DishRelationshipsData = RelationshipsOf<DishData>;
 export type CreateDishDTO = RequestJson<"/api/menu/dishes", "post">;

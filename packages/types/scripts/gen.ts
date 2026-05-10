@@ -33,9 +33,7 @@ async function generate(): Promise<{ ok: true; ts: string; pathCount: number } |
 
     const ast = await openapiTS(doc as Parameters<typeof openapiTS>[0]);
     const ts = astToString(ast);
-    const pathCount = Object.keys(
-      (doc as { paths?: Record<string, unknown> }).paths ?? {},
-    ).length;
+    const pathCount = Object.keys((doc as { paths?: Record<string, unknown> }).paths ?? {}).length;
     return { ok: true, ts, pathCount };
   } catch (err) {
     const reason = err instanceof Error ? err.message : String(err);
@@ -52,9 +50,7 @@ async function main(): Promise<void> {
   }
   await writeFile(outFile, PLACEHOLDER, "utf8");
   console.error(`[types] WARNING: codegen fell back to placeholder. Reason: ${result.reason}`);
-  console.error(
-    "[types] Aliases will resolve to never until the API OpenAPI generator is healthy.",
-  );
+  console.error("[types] Aliases will resolve to never until the API OpenAPI generator is healthy.");
 }
 
 main().catch((err: unknown) => {

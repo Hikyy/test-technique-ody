@@ -7,13 +7,13 @@ import {
   notifications as notificationsTable,
   type OrderStatus,
   orderLines,
+  orders as ordersTable,
   organizationMembers,
   organizations as organizationsTable,
-  orders as ordersTable,
   reservations as reservationsTable,
   restaurantMembers,
-  restaurantTables as restaurantTablesTable,
   restaurants as restaurantsTable,
+  restaurantTables as restaurantTablesTable,
 } from "@ody/db/schema";
 import {
   SEED_CATEGORIES,
@@ -80,47 +80,189 @@ const ORGS: Org[] = [
   {
     name: "Café Soleil",
     ownerEmail: "jean@cafesoleil.fr",
-    restaurants: [{ name: "Café Soleil Marseille", address: "12 Quai du Port, 13002 Marseille", phone: "+33 4 91 00 00 00" }],
+    restaurants: [
+      { name: "Café Soleil Marseille", address: "12 Quai du Port, 13002 Marseille", phone: "+33 4 91 00 00 00" },
+    ],
   },
 ];
 
 const FIRST_NAMES = [
-  "Adrien", "Agathe", "Alban", "Alice", "Amaury", "Ambre", "Anaïs", "Antoine", "Arthur", "Astrid",
-  "Aurélien", "Baptiste", "Béatrice", "Benjamin", "Camille", "Caroline", "Cécile", "Charles", "Charlotte",
-  "Clément", "Constance", "Damien", "Diane", "Élise", "Émilie", "Étienne", "Fanny", "Florent", "Gabriel",
-  "Gaëlle", "Geoffroy", "Hélène", "Hugo", "Inès", "Jeanne", "Joséphine", "Julien", "Justine", "Laetitia",
-  "Laurent", "Léa", "Léon", "Louise", "Lucas", "Manon", "Margaux", "Marius", "Mathias", "Maxime", "Noémie",
-  "Olivia", "Paul", "Pauline", "Quentin", "Raphaël", "Rémi", "Rose", "Salomé", "Sébastien", "Sidonie", "Simon",
-  "Sophie", "Stéphane", "Thaïs", "Théo", "Timothée", "Vincent", "Zoé",
+  "Adrien",
+  "Agathe",
+  "Alban",
+  "Alice",
+  "Amaury",
+  "Ambre",
+  "Anaïs",
+  "Antoine",
+  "Arthur",
+  "Astrid",
+  "Aurélien",
+  "Baptiste",
+  "Béatrice",
+  "Benjamin",
+  "Camille",
+  "Caroline",
+  "Cécile",
+  "Charles",
+  "Charlotte",
+  "Clément",
+  "Constance",
+  "Damien",
+  "Diane",
+  "Élise",
+  "Émilie",
+  "Étienne",
+  "Fanny",
+  "Florent",
+  "Gabriel",
+  "Gaëlle",
+  "Geoffroy",
+  "Hélène",
+  "Hugo",
+  "Inès",
+  "Jeanne",
+  "Joséphine",
+  "Julien",
+  "Justine",
+  "Laetitia",
+  "Laurent",
+  "Léa",
+  "Léon",
+  "Louise",
+  "Lucas",
+  "Manon",
+  "Margaux",
+  "Marius",
+  "Mathias",
+  "Maxime",
+  "Noémie",
+  "Olivia",
+  "Paul",
+  "Pauline",
+  "Quentin",
+  "Raphaël",
+  "Rémi",
+  "Rose",
+  "Salomé",
+  "Sébastien",
+  "Sidonie",
+  "Simon",
+  "Sophie",
+  "Stéphane",
+  "Thaïs",
+  "Théo",
+  "Timothée",
+  "Vincent",
+  "Zoé",
 ];
 
 const LAST_NAMES = [
-  "Albertini", "Beaumont", "Berthier", "Bouchard", "Caron", "Charpentier", "Chevalier", "Cohen-Sabban",
-  "Daubigny", "Delacroix", "Demaret", "Dorian", "Dussart", "Esposito", "Faure", "Fontaine", "Granger",
-  "Hubert", "Jourdain", "Lafaye", "Laporte", "Lefèvre", "Lemoine", "Lhermitte", "Marchetti", "Martel",
-  "Moutarde", "Nakamura", "Pasquier", "Perrin", "Pommier", "Rambert", "Reverdin", "Saint-Clair", "Tessier",
-  "Vasseur", "Vauthier", "Vidal", "Villiers", "Weber",
+  "Albertini",
+  "Beaumont",
+  "Berthier",
+  "Bouchard",
+  "Caron",
+  "Charpentier",
+  "Chevalier",
+  "Cohen-Sabban",
+  "Daubigny",
+  "Delacroix",
+  "Demaret",
+  "Dorian",
+  "Dussart",
+  "Esposito",
+  "Faure",
+  "Fontaine",
+  "Granger",
+  "Hubert",
+  "Jourdain",
+  "Lafaye",
+  "Laporte",
+  "Lefèvre",
+  "Lemoine",
+  "Lhermitte",
+  "Marchetti",
+  "Martel",
+  "Moutarde",
+  "Nakamura",
+  "Pasquier",
+  "Perrin",
+  "Pommier",
+  "Rambert",
+  "Reverdin",
+  "Saint-Clair",
+  "Tessier",
+  "Vasseur",
+  "Vauthier",
+  "Vidal",
+  "Villiers",
+  "Weber",
 ];
 
 const CUSTOMER_NOTES = [
-  "Allergie aux fruits à coque", "Préfère la table 4", "Sans gluten", "Végétarien",
-  "Anniversaire en mars", "Habitué du déjeuner d'affaires", "Amateur de vins nature",
-  "Réserve souvent à la dernière minute", "Sommelière confirmée", "Toujours avec son chien",
-  "Critique gastronomique", null, null, null,
+  "Allergie aux fruits à coque",
+  "Préfère la table 4",
+  "Sans gluten",
+  "Végétarien",
+  "Anniversaire en mars",
+  "Habitué du déjeuner d'affaires",
+  "Amateur de vins nature",
+  "Réserve souvent à la dernière minute",
+  "Sommelière confirmée",
+  "Toujours avec son chien",
+  "Critique gastronomique",
+  null,
+  null,
+  null,
 ];
 
 const ORDER_NOTES = [
-  "Allergie aux fruits à coque", "Sans oignon", "Cuisson saignante", "Pas trop salé",
-  "Avec une bougie pour anniversaire", "Service rapide demandé", null, null, null, null,
+  "Allergie aux fruits à coque",
+  "Sans oignon",
+  "Cuisson saignante",
+  "Pas trop salé",
+  "Avec une bougie pour anniversaire",
+  "Service rapide demandé",
+  null,
+  null,
+  null,
+  null,
 ];
 
 const STATUS_DISTRIBUTION: ReadonlyArray<OrderStatus> = [
-  "pending", "pending", "pending", "pending",
-  "cooking", "cooking", "cooking", "cooking",
-  "sent", "sent", "sent", "sent",
-  "served", "served", "served", "served", "served", "served", "served", "served", "served", "served",
-  "served", "served", "served", "served", "served", "served", "served", "served",
-  "cancelled", "cancelled",
+  "pending",
+  "pending",
+  "pending",
+  "pending",
+  "cooking",
+  "cooking",
+  "cooking",
+  "cooking",
+  "sent",
+  "sent",
+  "sent",
+  "sent",
+  "served",
+  "served",
+  "served",
+  "served",
+  "served",
+  "served",
+  "served",
+  "served",
+  "served",
+  "served",
+  "served",
+  "served",
+  "served",
+  "served",
+  "served",
+  "served",
+  "served",
+  "served",
+  "cancelled",
+  "cancelled",
 ];
 
 const ORDERS_PER_RESTAURANT = 80;
@@ -142,7 +284,12 @@ const pick = <T>(arr: ReadonlyArray<T>): T => arr[Math.floor(rand() * arr.length
 const randInt = (min: number, max: number): number => Math.floor(rand() * (max - min + 1)) + min;
 
 function slugify(s: string): string {
-  return s.toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g, "").replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
+  return s
+    .toLowerCase()
+    .normalize("NFD")
+    .replace(/[̀-ͯ]/g, "")
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-|-$/g, "");
 }
 
 async function truncateAll(): Promise<void> {
@@ -208,7 +355,11 @@ async function createRestaurant(organizationId: string, ownerId: string, r: Rest
   });
 }
 
-async function addRestaurantMember(restaurantId: string, userId: string, role: "owner" | "manager" | "staff"): Promise<void> {
+async function addRestaurantMember(
+  restaurantId: string,
+  userId: string,
+  role: "owner" | "manager" | "staff",
+): Promise<void> {
   await db
     .insert(restaurantMembers)
     .values({ restaurantId, userId, role })
@@ -265,8 +416,7 @@ async function seedOrgCustomers(organizationId: string, orgSlug: string): Promis
       organizationId,
       firstName,
       lastName,
-      email:
-        rand() < 0.65 ? `${slugify(firstName)}.${slugify(lastName)}+${orgSlug}@example.com` : null,
+      email: rand() < 0.65 ? `${slugify(firstName)}.${slugify(lastName)}+${orgSlug}@example.com` : null,
       phone: rand() < 0.85 ? `06 ${randInt(10, 99)} ${randInt(10, 99)} ${randInt(10, 99)} ${randInt(10, 99)}` : null,
       notes: note ?? null,
       visitsCount,
@@ -303,10 +453,17 @@ async function seedRestaurantTables(restaurantId: string): Promise<Array<{ id: s
 }
 
 const RESERVATION_STATUS_DIST = [
-  "confirmed", "confirmed", "confirmed", "confirmed", "confirmed",
-  "pending", "pending",
+  "confirmed",
+  "confirmed",
+  "confirmed",
+  "confirmed",
+  "confirmed",
+  "pending",
+  "pending",
   "seated",
-  "completed", "completed", "completed",
+  "completed",
+  "completed",
+  "completed",
   "cancelled",
   "no_show",
 ] as const;
@@ -347,8 +504,11 @@ async function seedRestaurantReservations(
             restaurantId,
             tableId: tbl.id,
             customerId: useCustomer ? pick(customerIds) : null,
-            guestName: useCustomer ? null : `${pick(["M.", "Mme"])} ${pick(["Albert", "Beauchamp", "Cazals", "Doré", "Esnault", "Faure", "Garcia", "Henry"])}`,
-            guestPhone: rand() < 0.7 ? `06 ${randInt(10, 99)} ${randInt(10, 99)} ${randInt(10, 99)} ${randInt(10, 99)}` : null,
+            guestName: useCustomer
+              ? null
+              : `${pick(["M.", "Mme"])} ${pick(["Albert", "Beauchamp", "Cazals", "Doré", "Esnault", "Faure", "Garcia", "Henry"])}`,
+            guestPhone:
+              rand() < 0.7 ? `06 ${randInt(10, 99)} ${randInt(10, 99)} ${randInt(10, 99)} ${randInt(10, 99)}` : null,
             partySize,
             startsAt,
             endsAt,
@@ -408,9 +568,11 @@ async function seedRestaurantOrders(
         .returning({ id: ordersTable.id });
       if (!order) throw new Error("Failed to insert order");
 
-      await tx.insert(orderLines).values(
-        lines.map((l) => ({ orderId: order.id, dishId: l.dishId, qty: l.qty, unitPriceCents: l.unitPriceCents })),
-      );
+      await tx
+        .insert(orderLines)
+        .values(
+          lines.map((l) => ({ orderId: order.id, dishId: l.dishId, qty: l.qty, unitPriceCents: l.unitPriceCents })),
+        );
       total++;
     }
   });
@@ -425,9 +587,17 @@ async function seedRestaurantNotifications(restaurantId: string): Promise<number
     const unread = i < 4;
     const minutesAgo = unread ? randInt(2, 180) : randInt(180, 60 * 24 * 5);
     const types: Array<{ type: string; title: string; data: Record<string, unknown> }> = [
-      { type: "order.created", title: `Nouvelle commande · table ${randInt(1, 24)}`, data: { tableNumber: randInt(1, 24) } },
+      {
+        type: "order.created",
+        title: `Nouvelle commande · table ${randInt(1, 24)}`,
+        data: { tableNumber: randInt(1, 24) },
+      },
       { type: "order.status_changed", title: "Statut · En cuisine → Envoyée", data: { from: "cooking", to: "sent" } },
-      { type: "order.cancelled", title: `Commande annulée · table ${randInt(1, 24)}`, data: { from: "pending", to: "cancelled" } },
+      {
+        type: "order.cancelled",
+        title: `Commande annulée · table ${randInt(1, 24)}`,
+        data: { from: "pending", to: "cancelled" },
+      },
       { type: "system", title: "Rapport quotidien disponible", data: {} },
     ];
     const t = pick(types);

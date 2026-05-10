@@ -145,7 +145,9 @@ export async function up(pgm: MigrationBuilder): Promise<void> {
 
   pgm.sql(`DROP INDEX IF EXISTS "orders_status_created_idx";`);
   pgm.sql(`DROP INDEX IF EXISTS "orders_customer_idx";`);
-  pgm.createIndex("orders", ["restaurant_id", "status", "created_at"], { name: "orders_restaurant_status_created_idx" });
+  pgm.createIndex("orders", ["restaurant_id", "status", "created_at"], {
+    name: "orders_restaurant_status_created_idx",
+  });
   pgm.createIndex("orders", "customer_id", { name: "orders_customer_idx" });
 
   pgm.createIndex("dishes", ["restaurant_id", "category_id", "available"], {

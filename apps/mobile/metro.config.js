@@ -17,13 +17,7 @@ config.resolver.nodeModulesPaths = [
 config.resolver.disableHierarchicalLookup = false;
 config.resolver.unstable_enableSymlinks = true;
 
-const SINGLETONS = [
-  "react",
-  "react-dom",
-  "react-native",
-  "@tanstack/react-query",
-  "@tanstack/query-core",
-];
+const SINGLETONS = ["react", "react-dom", "react-native", "@tanstack/react-query", "@tanstack/query-core"];
 
 config.resolver.extraNodeModules = SINGLETONS.reduce((acc, pkg) => {
   acc[pkg] = path.resolve(projectRoot, "node_modules", pkg);

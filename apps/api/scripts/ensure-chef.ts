@@ -1,6 +1,6 @@
-import { eq } from "drizzle-orm";
 import { closeDb, db } from "@ody/db/client";
 import { users } from "@ody/db/schema";
+import { eq } from "drizzle-orm";
 import { auth } from "../src/auth/auth.js";
 
 const CHEF_EMAIL = "chef@seve.fr";
@@ -18,10 +18,7 @@ async function main(): Promise<void> {
     body: { email: CHEF_EMAIL, password: CHEF_PASSWORD, name: CHEF_NAME },
   });
 
-  await db
-    .update(users)
-    .set({ emailVerified: true, role: "chef" })
-    .where(eq(users.email, CHEF_EMAIL));
+  await db.update(users).set({ emailVerified: true, role: "chef" }).where(eq(users.email, CHEF_EMAIL));
 
   console.log(`✓ chef created (${CHEF_EMAIL} / ${CHEF_PASSWORD})`);
 }

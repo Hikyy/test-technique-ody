@@ -25,7 +25,9 @@
     "next-intl": "*"
   },
   "peerDependenciesMeta": {
-    "next-intl": { "optional": true }
+    "next-intl": {
+      "optional": true
+    }
   },
   "devDependencies": {
     "typescript": "catalog:"
