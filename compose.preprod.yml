@@ -9,6 +9,7 @@ services:
       POSTGRES_USER: ${PG_USER:-ody}
       POSTGRES_PASSWORD: ${PG_PASS:?PG_PASS required}
       POSTGRES_DB: ${PG_DB:-ody}
+      PGDATA: /var/lib/postgresql/data/pgdata
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U $${POSTGRES_USER:-ody}"]
       interval: 10s
