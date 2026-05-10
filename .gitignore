@@ -79,6 +79,8 @@ web-build/
 *.db-journal
 .data/
 data/
+!packages/**/data/
+!apps/**/data/
 dump.rdb
 postgres-data/
 

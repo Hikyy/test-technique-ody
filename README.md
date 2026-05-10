@@ -161,6 +161,10 @@ make dev-api             # API uniquement (port 3001)
 make dev-web             # Web uniquement (port 3000)
 make dev-mobile          # Expo (Metro)
 
+# Réseau LAN (mobile sur device physique)
+make lan-ip              # Auto-détecte l'IP LAN et patche les .env
+make lan-ip IP=10.0.0.42 # Force une IP spécifique
+
 # Base
 make db-migrate          # Applique les migrations
 make db-seed             # Truncate + insert riche
@@ -189,7 +193,7 @@ Chaque app a son `.env.example` à copier en `.env`.
 | `./.env` | Variables PG_* utilisées par Docker Compose et `make dev` |
 | `./apps/api/.env` | API (auth, mail, storage, CORS) — voir `apps/api/src/config.ts` (Zod) |
 | `./apps/web/.env.local` | `NEXT_PUBLIC_API_URL` |
-| `./apps/mobile/.env` | `EXPO_PUBLIC_API_URL` (utiliser l'IP LAN sur device physique) |
+| `./apps/mobile/.env` | `EXPO_PUBLIC_API_URL` (utiliser l'IP LAN sur device physique — voir ci-dessous) |
 | `./db/.env` | PG_* pour `node-pg-migrate` et le seeder |
 
 `make dev` initialise automatiquement `./.env` depuis `.env.example` au premier lancement. Les autres `.env` doivent être créés manuellement (sécurité : `AUTH_SECRET` notamment).
@@ -197,6 +201,23 @@ Chaque app a son `.env.example` à copier en `.env`.
 ```bash
 openssl rand -base64 32         # génère un AUTH_SECRET
 ```
+
+### Mobile sur device physique (Expo Go / build)
+
+Un iPhone/Android ne peut pas joindre `http://localhost:3001` — il faut l'**IP LAN** du Mac. `make lan-ip` patche les `.env` automatiquement :
+
+```bash
+make lan-ip                       # auto-détecte (en0 → en1)
+make lan-ip IP=192.168.1.42       # force une IP spécifique
+```
+
+Met à jour de façon idempotente : `apps/mobile/.env` (`EXPO_PUBLIC_API_URL`) + `apps/api/.env` & `./.env` (`CORS_ORIGINS`). À relancer à chaque changement de Wi-Fi, puis :
+
+```bash
+pnpm --filter @ody/mobile start -c    # -c vide le cache Metro pour re-bundler EXPO_PUBLIC_*
+```
+
+Téléphone et Mac doivent être sur le même Wi-Fi.
 
 ---
 
