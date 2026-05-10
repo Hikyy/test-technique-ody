@@ -4,7 +4,7 @@
 #   - Aucun `ports:` exposé sur l'hôte (Traefik gère le routing public)
 #   - `expose:` pour les ports internes
 #   - Magic vars: SERVICE_USER_POSTGRES / SERVICE_PASSWORD_POSTGRES (auto-générés & persistés)
-#   - Magic vars: SERVICE_FQDN_API_3001 / SERVICE_FQDN_WEB_3000 (FQDN + TLS auto)
+#   - Magic vars: SERVICE_URL_API / SERVICE_URL_WEB (Coolify auto-generates, override via Domains UI)
 #   - Pas de labels Traefik manuels (Coolify les injecte)
 
 services:
@@ -45,9 +45,9 @@ services:
       PG_PASS: ${SERVICE_PASSWORD_POSTGRES}
       PG_DB: ${POSTGRES_DB:-seve}
       AUTH_SECRET: ${SERVICE_BASE64_AUTH}
-      AUTH_URL: ${SERVICE_FQDN_API_3001}
-      WEB_URL: ${SERVICE_FQDN_WEB_3000}
-      CORS_ORIGINS: ${SERVICE_FQDN_WEB_3000}
+      AUTH_URL: ${SERVICE_URL_API}
+      WEB_URL: ${SERVICE_URL_WEB}
+      CORS_ORIGINS: ${SERVICE_URL_WEB}
       LOG_LEVEL: ${LOG_LEVEL:-info}
       STORAGE_DIR: /data/storage
       STORAGE_PUBLIC_PATH: /storage
@@ -77,7 +77,7 @@ services:
       context: .
       dockerfile: apps/web/Dockerfile
       args:
-        NEXT_PUBLIC_API_URL: ${SERVICE_FQDN_API_3001}
+        NEXT_PUBLIC_API_URL: ${SERVICE_URL_API}
     restart: unless-stopped
     depends_on:
       api:
@@ -86,7 +86,7 @@ services:
       NODE_ENV: production
       PORT: 3000
       HOSTNAME: 0.0.0.0
-      NEXT_PUBLIC_API_URL: ${SERVICE_FQDN_API_3001}
+      NEXT_PUBLIC_API_URL: ${SERVICE_URL_API}
     healthcheck:
       test: ["CMD-SHELL", "wget -q --spider http://localhost:3000/ || exit 1"]
       interval: 30s
